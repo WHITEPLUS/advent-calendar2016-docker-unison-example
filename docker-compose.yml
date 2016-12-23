@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  data:
+    image: whiteplus/unison
+    container_name: piyo_data
+    volumes:
+      - /var/www/piyo
+    ports:
+      - "5000:5000"
+    environment:
+      - UNISON_DIR=/var/www/piyo
+  web:
+    container_name: piyo_web
+    build: .
+    depends_on:
+      - data
+    volumes_from:
+      - data
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_PATH_PREFIX=/var/www/piyo
